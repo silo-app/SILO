@@ -34,7 +34,7 @@ SILO_LDAP_USER_DN_TEMPLATE=uid={username},dc=mokapi,dc=io
 SILO_LDAP_SSL_SKIP_VERIFY=1
 ```
 
-### Start container using `docker-compoer.dev.yml`
+### Start container using `docker-compose.dev.yml`
 ```bash
 $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 ```

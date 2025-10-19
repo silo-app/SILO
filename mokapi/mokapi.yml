@@ -1,0 +1,4 @@
+ldap: 3.0
+host: :389
+files:
+  - ./ldap.ldif

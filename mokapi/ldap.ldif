@@ -1,0 +1,27 @@
+dn: dc=mokapi,dc=io
+
+dn: uid=awilliams,dc=mokapi,dc=io
+cn: Alice Williams
+uid: awilliams
+userPassword: foo123
+
+dn: uid=bmiller,dc=mokapi,dc=io
+cn: Bob Miller
+uid: bmiller
+userPassword: bar123
+
+dn: uid=csmith,dc=mokapi,dc=io
+cn: Carol Smith
+uid: csmith
+mail: carol.smith@silo.dev
+userPassword: secret123
+memberOf: cn=Admins,ou=groups,dc=mokapi,dc=io
+memberOf: cn=Technicans,ou=groups,dc=mokapi,dc=io
+
+dn: ou=groups,dc=mokapi,dc=io
+
+dn: cn=Admins,ou=groups,dc=mokapi,dc=io
+cn: "Admins"
+
+dn: cn=Technicans,ou=groups,dc=mokapi,dc=io
+cn: "Technicans"

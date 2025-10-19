@@ -1,0 +1,12 @@
+services:
+
+  # SILO API
+  api:
+    container_name: silo-api
+    env_file:
+      - .env.production
+
+  postgres:
+    container_name: silo-postgres
+    env_file:
+      - .env.production

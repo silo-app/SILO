@@ -12,19 +12,26 @@ services:
 
   # PostgreSQL
   postgres:
-    image: postgres:16
+    image: postgres:latest
     ports:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["/bin/bash", "pg_isready -U silo -d silo_db"]
+      test: ["/bin/bash", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
       - silo-net
     restart: unless-stopped
+
+  frontend:
+    image: ghcr.io/silo-app/silo-ui:latest
+    ports:
+      - "5173:5173"
+    networks:
+      - silo-net
 
 networks:
   silo-net:

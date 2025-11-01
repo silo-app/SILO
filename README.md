@@ -14,24 +14,7 @@ $ mkdir silo && cd silo
 $ git clone https://github.com/silo-app/silo-api.git
 $ git clone https://github.com/silo-app/SILO.git
 $ cd SILO
-```
-
-#### Create `.env.development`
-
-```environment
-POSTGRES_HOST=postgres
-POSTGRES_PORT=5432
-POSTGRES_DB=silo_db
-POSTGRES_USER=silo
-POSTGRES_PASSWORD=devpostgresqlpassword
-
-SILO_POSTGRES_DATABASE_URI=postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-SILO_JWT_SECRET_KEY=silojwtsecretkey123
-SILO_FIRST_ADMIN_USER=csmith
-SILO_LDAP_ALLOWED_GROUPS=["cn=Admins,ou=groups,dc=mokapi,dc=io"]
-SILO_LDAP_BASE_DN=dc=mokapi,dc=io
-SILO_LDAP_USER_DN_TEMPLATE=uid={username},dc=mokapi,dc=io
-SILO_LDAP_SSL_SKIP_VERIFY=1
+$ cp .env.example .env.development
 ```
 
 ### Start container using `docker-compose.dev.yml`

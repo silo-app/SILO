@@ -1,20 +1,6 @@
 services:
 
-  # SILO API
-  api:
-    container_name: silo-dev-api
-    build: ../silo-api
-    command: ["/app/.venv/bin/fastapi", "dev", "src/silo/main.py", "--host", "0.0.0.0", "--port", "8000"]
-    env_file:
-      - .env.development
-    environment:
-      - SILO_LDAP_SERVER_URI=ldap://mokapi:389
-
-  postgres:
-    container_name: silo-dev-postgres
-    env_file:
-      - .env.development
-
+  # Mock LDAP server for development/testing
   mokapi:
     image: mokapi/mokapi:latest
     container_name: silo-dev-mokapi
@@ -22,12 +8,43 @@ services:
       - "8080:8080"
       - "389:389"
     volumes:
-      - ./mokapi:/mokapi:ro
-    command: ["--providers-file-filename", "/mokapi"]
+      - ./.development/mokapi:/.development/mokapi:ro
+    command: ["--providers-file-filename", "/.development/mokapi"]
     networks:
       - silo-net
     restart: unless-stopped
-    
+
+  # PostgreSQL database
+  postgres:
+    container_name: silo-dev-postgres
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=silodb
+      - POSTGRES_USER=silo
+      - POSTGRES_PASSWORD=dbuserpassword
+
+  # SILO API
+  api:
+    container_name: silo-dev-api
+    build: ../silo-api
+    command: ["/app/.venv/bin/fastapi", "dev", "src/silo/main.py", "--host", "0.0.0.0", "--port", "8000"]
+    environment:
+      - SILO_LDAP_SERVER_URI=ldap://mokapi:389
+      - SILO_POSTGRES_DATABASE_URI=postgresql+asyncpg://silo:dbuserpassword@postgres:5432/silodb
+      - SILO_JWT_SECRET_KEY=asdz2ihzaisf873fiahgs78ef378gdzahug72adssda
+      - SILO_FIRST_ADMIN_USER=csmith
+      - SILO_LDAP_ALLOWED_GROUPS=["cn=Admins,ou=groups,dc=mokapi,dc=io"]
+      - SILO_LDAP_SERVER_URI=ldap://localhost:389
+      - SILO_LDAP_BASE_DN=dc=mokapi,dc=io
+      - SILO_LDAP_USER_DN_TEMPLATE=uid={username},dc=mokapi,dc=io
+      - SILO_LDAP_SSL_SKIP_VERIFY=1
+
+  # SILO user interface
+  frontend:
+    container_name: silo-dev-ui
+    build: ../silo-ui
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
 
 networks:
   silo-net:

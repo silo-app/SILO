@@ -10,3 +10,8 @@ services:
     container_name: silo-postgres
     env_file:
       - .env.production
+
+  frontend:
+    container_name: silo-ui
+    env_file:
+      - .env.production
